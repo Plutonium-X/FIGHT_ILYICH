@@ -1,0 +1,7 @@
+IF
+  Global("RZ_SII_Global_Cutscene","AR0603",1)
+  NumTimesTalkedTo(0)
+THEN
+	RESPONSE #100
+		Dialogue([PC])
+END

@@ -1,0 +1,32 @@
+IF
+	IsOverMe("Imoen")
+	CombatCounter(0)
+	Global("RZ_SII_Jon_Room","AR0602",0)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_SII_Jon_Room","AR0602",1)
+		ActionOverride("Imoen",StartDialogueNoSet(Player1))
+END
+
+IF
+	IsOverMe([PC])
+	InParty("Imoen")
+	!Dead("Imoen") // Imoen
+	Range("Imoen",8)
+	Global("RZ_SII_Jon_Room","AR0602",0)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_SII_Jon_Room","AR0602",1)
+		ActionOverride("Imoen",StartDialogueNoSet(Player1))
+END
+
+IF
+	OR(2)
+	     IsOverMe([PC])
+             Entered([PC])
+	Global("RZ_SII_Jon_Room","AR0602",0)
+THEN
+	RESPONSE #100
+	        SetGlobal("RZ_SII_Jon_Room","AR0602",2)
+		DisplayString(Myself,52077) // You suddenly have a sense of imminent danger.  Something here is not what it seems.
+END

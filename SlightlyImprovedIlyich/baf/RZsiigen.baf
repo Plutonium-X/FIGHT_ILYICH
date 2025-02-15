@@ -1,0 +1,216 @@
+IF
+        Global("Door06Unlocked","AR0603",1)
+        Global("RZ_See_Enemy","LOCALS",0)
+        Name("Clone1",Myself) // Duergar
+        DifficultyGT(EASY)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_See_Enemy","LOCALS",1)
+END
+
+IF
+        Name("Clone1",Myself) // Duergar
+        See([PC])
+THEN
+	RESPONSE #100
+		StartDialogueNoSet(LastSeenBy(Myself))
+		ChangeAIScript("",OVERRIDE)
+END
+
+IF
+        Global("Pedpoly","AR0603",2)
+        Global("Pedfire","AR0603",2)
+        Global("Pedfrost","AR0603",2)
+        Global("Pedlight","AR0603",2)
+        Global("Pedmagm","AR0603",2)
+        Global("Pedsumm","AR0603",2)
+        Global("RZ_See_Enemy","LOCALS",0)
+        OR(3)
+             Name("RZsiiT01",Myself) // Duergar
+             Name("RZsiiT02",Myself) // Duergar
+             Name("RZsiiT03",Myself) // Duergar
+        DifficultyGT(EASY)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_See_Enemy","LOCALS",1)
+		ChangeAIScript("",OVERRIDE)
+END
+
+IF
+        Global("Pedpoly","AR0603",2)
+        Global("Pedfire","AR0603",2)
+        Global("Pedfrost","AR0603",2)
+        Global("Pedlight","AR0603",2)
+        Global("Pedmagm","AR0603",2)
+        Global("Pedsumm","AR0603",2)
+        OR(3)
+             Name("RZsiiT01",Myself) // Duergar
+             Name("RZsiiT02",Myself) // Duergar
+             Name("RZsiiT03",Myself) // Duergar
+        OR(2)
+             DifficultyLT(NORMAL)
+             See(NearestEnemyOf(Myself))
+THEN
+	RESPONSE #100
+		ChangeAIScript("",OVERRIDE)
+END
+
+IF
+	OR(2)
+	       See(NearestEnemyOf(Myself))
+	       DifficultyLT(NORMAL)
+	OR(3)
+		Name("RZsiiD08",Myself) // Duergar
+		Name("RZsiiD09",Myself) // Duergar
+		Name("RZsiiD10",Myself) // Mage
+THEN
+	RESPONSE #100
+		ChangeAIScript("",OVERRIDE)
+END
+
+IF
+	!Allegiance(Myself,NEUTRAL)
+	Name("DuegarClanChief",Myself)
+THEN
+	RESPONSE #100
+		ChangeAIScript("",OVERRIDE)
+END
+
+IF
+	Name("RZsiiT04",Myself) // Mage
+	!Allegiance(Myself,NEUTRAL)
+THEN
+	RESPONSE #100
+		ChangeAIScript("",OVERRIDE)
+END
+
+IF
+	Global("RZMailOfDead","LOCALS",0)
+	Name("DuegarClanChief",Myself)
+THEN
+	RESPONSE #100
+		SetGlobal("RZMailOfDead","LOCALS",1)
+		DestroyItem("CHAN03") // Mail of the Dead +2
+		CreateItem("CHAN03",0,0,0) // Mail of the Dead +2
+		FillSlot(SLOT_ARMOR)
+END
+
+IF
+	NumItemsGT("CHAN03",Myself,1) // Mail of the Dead +2
+	Global("RZMailOfDead","LOCALS",1)
+THEN
+	RESPONSE #100
+		SetGlobal("RZMailOfDead","LOCALS",0)
+END
+
+IF
+	See([PC])
+	Name("RZsiiD07",Myself) // Duergar
+THEN
+	RESPONSE #100
+		SmallWait(8)
+		DisplayStringHead(Myself,55512) // Wh-what?!  By the Exile, the prisoners have escaped! Between invading thieves and the loss of <CHARNAME>, the master will not be pleased.  Come, gray ones, we must be stopping them!
+		ChangeAIScript("",OVERRIDE)
+END
+
+IF
+	See([PC])
+	Name("DuegarClanChief",Myself)
+	!Range(LastSeenBy(Myself),14)
+THEN
+	RESPONSE #100
+		MoveToObject(LastSeenBy(Myself))
+END
+
+IF
+	See([PC])
+	Name("RZsiiT04",Myself) // Mage
+	Range(LastSeenBy(Myself),25)
+THEN
+	RESPONSE #100
+		FaceObject(LastSeenBy(Myself))
+		SetGlobal("RZ_Under_Attack","MYAREA",1)
+		StartDialogueNoSet(LastSeenBy(Myself))
+		ChangeAIScript("",OVERRIDE)
+END
+
+IF
+	See([PC])
+	Name("DuegarClanChief",Myself)
+	Range(LastSeenBy(Myself),14)
+THEN
+	RESPONSE #100
+		ClearActions(Myself)
+		StartDialogueNoSet(LastSeenBy(Myself))
+		ChangeAIScript("",OVERRIDE)
+END
+
+IF
+	Name("RZsiiD04",Myself) // Duergar
+	Allegiance(Myself,NEUTRAL)
+	!Difficulty(HARD)
+	OR(2)
+		NumInPartyLT(5)
+		Difficulty(EASIEST)
+	OR(2)
+		XPLT(Player1,161000)
+		Difficulty(EASIEST)
+THEN
+	RESPONSE #100
+		DestroySelf()
+END
+
+IF
+	Name("RZsiiD04",Myself) // Duergar
+THEN
+	RESPONSE #100
+		ChangeAIScript("",OVERRIDE)
+END
+
+IF
+	Global("RZ_Patrol","LOCALS",0)
+	Global("RZ_Start_Patrol","MYAREA",1)
+        OR(2)
+		See(NearestEnemyOf(Myself))
+		DifficultyLT(NORMAL)
+	OR(4)
+		Name("RZsiiD07",Myself) // Duergar
+		Name("RZsiiD08",Myself) // Duergar
+		Name("RZsiiD09",Myself) // Duergar
+		Name("RZsiiD10",Myself) // Mage
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Patrol","LOCALS",2)
+END
+
+IF
+	Global("RZ_Patrol","LOCALS",0)
+	Global("RZ_Start_Patrol","MYAREA",1)
+	!See(NearestEnemyOf(Myself))
+	DifficultyGT(EASY)
+	OR(4)
+		Name("RZsiiD07",Myself) // Duergar
+		Name("RZsiiD08",Myself) // Duergar
+		Name("RZsiiD09",Myself) // Duergar
+		Name("RZsiiD10",Myself) // Mage
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Patrol","LOCALS",1)
+		SetGlobalTimer("RZ_Patrol_Timer","LOCALS",18)
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Patrol_Timer","LOCALS")
+	Global("RZ_Patrol","LOCALS",1)
+	!See(NearestEnemyOf(Myself))
+	DifficultyGT(EASY)
+	OR(4)
+		Name("RZsiiD07",Myself) // Duergar
+		Name("RZsiiD08",Myself) // Duergar
+		Name("RZsiiD09",Myself) // Duergar
+		Name("RZsiiD10",Myself) // Mage
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Patrol","LOCALS",2)
+		SetGlobal("RZ_See_Enemy","LOCALS",1)
+END

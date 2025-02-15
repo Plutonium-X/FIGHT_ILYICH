@@ -1,0 +1,21 @@
+IF
+	Global("SawKhalid","AR0603",1)
+	Global("ImoenKhalid","LOCALS",0)
+	!See([ENEMY])
+	CombatCounter(0)
+	!GlobalTimerNotExpired("RZ_SII_Saw_Khalid_Timer","AR0603")
+	See("Jaheira")
+	Range("Jaheira",15)
+THEN
+	RESPONSE #100
+		StartDialogueNoSet("Jaheira")
+END
+
+IF
+	Global("SawKhalid","AR0603",1)
+	Global("ImoenKhalid","LOCALS",0)
+	!InParty("Jaheira")
+THEN
+	RESPONSE #100
+		SetGlobal("ImoenKhalid","LOCALS",1)
+END

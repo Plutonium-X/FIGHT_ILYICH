@@ -1,0 +1,255 @@
+IF
+	Global("RZ_Can_Melee","LOCALS",0)
+        !HaveSpell(WIZARD_SUN_FIRE)
+        !HaveSpell(WIZARD_BURNING_HANDS)
+	!HaveSpell(WIZARD_BLINDNESS)
+	!HaveSpell(WIZARD_SPOOK)
+        !HaveSpell(WIZARD_AGANNAZAR_SCORCHER)
+	!HaveSpell(WIZARD_MAGIC_MISSILE)
+	!HaveSpell(WIZARD_CHROMATIC_ORB)
+	!HasItem("SCRL77",Myself) // Magic Missile
+	!HaveSpell(WIZARD_FLAME_ARROW)
+	!HasItem("SCRL1F",Myself) // Flame Arrow
+	!HaveSpell(WIZARD_MELF_ACID_ARROW)
+	!HaveSpell(WIZARD_SKULL_TRAP)
+	!HaveSpell(WIZARD_RAY_OF_ENFEEBLEMENT)
+	!HaveSpell(WIZARD_HORROR)
+	!HaveSpell(WIZARD_HOLD_PERSON)
+        !HasItem("SCRL1I",Myself) // Hold Person
+	!HaveSpell(WIZARD_CHAOS)
+	!HaveSpell(WIZARD_EMOTION_HOPELESSNESS)
+	!HaveSpell(WIZARD_CONFUSION)
+	!HasItem("SCRL1O",Myself) // Slow
+	!HaveSpell(WIZARD_SLOW)
+	!HaveSpell(WIZARD_GLITTERDUST)
+	!HaveSpell(WIZARD_GREATER_MALISON)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Can_Melee","LOCALS",1)
+		Continue()
+END
+
+IF
+        Global("RZ_Rest","LOCALS",0)
+        OR(7)
+             Detect([GOODCUTOFF.0.0.0.0.SUMMONED])
+	     Detect([PC])
+	     Detect([ALLY])
+	     Detect([CONTROLLED])
+             Detect([CHARMED])
+             Detect([FAMILIAR])
+             Detect(NearestEnemyOf(Myself))
+ THEN
+	RESPONSE #100
+	         SetGlobal("RZ_Rest","LOCALS",1)
+	         SetGlobalTimer("RZ_Rest_Timer","LOCALS",2400)
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Rest_Timer","LOCALS")
+	!Detect([GOODCUTOFF.0.0.0.0.SUMMONED])
+	!Detect([PC])
+	!Detect([ALLY])
+	!Detect([CONTROLLED])
+        !Detect([CHARMED])
+        !Detect([FAMILIAR])
+        !Detect(NearestEnemyOf(Myself))
+        CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("RZ_Rest_Timer","LOCALS",3600)
+		SetGlobal("RZ_Rest","LOCALS",0)
+		ApplySpell(Myself,RESTORE_FULL_HEALTH)
+		Rest()
+END
+
+IF
+        !Allegiance(Myself,ENEMY)
+	OR(18)
+                AttackedBy([GOODCUTOFF.0.0.0.0.SUMMONED],DEFAULT)
+		AttackedBy([PC],DEFAULT)
+		AttackedBy([FAMILIAR],DEFAULT)
+		AttackedBy([ALLY],DEFAULT)
+		AttackedBy([CONTROLLED],DEFAULT)
+		AttackedBy([CHARMED],DEFAULT)
+		HitBy([GOODCUTOFF.0.0.0.0.SUMMONED],CRUSHING)
+		HitBy([PC],CRUSHING)
+		HitBy([FAMILIAR],CRUSHING)
+		HitBy([ALLY],CRUSHING)
+		HitBy([CONTROLLED],CRUSHING)
+		HitBy([CHARMED],CRUSHING)
+		SpellCastOnMe([GOODCUTOFF.0.0.0.0.SUMMONED],0)
+		SpellCastOnMe([PC],0)
+		SpellCastOnMe([FAMILIAR],0)
+		SpellCastOnMe([ALLY],0)
+		SpellCastOnMe([CONTROLLED],0)
+		SpellCastOnMe([CHARMED],0)
+THEN
+	RESPONSE #100
+		Enemy()
+		ChangeAIScript("RZSIIMGA",OVERRIDE)
+		ChangeAIScript("RZSIIMGB",CLASS)
+		ChangeAIScript("RZSIIATA",RACE)
+END
+
+IF
+        !Allegiance(Myself,ENEMY)
+	!Detect([NEUTRAL.0.0.THIEF_ALL])
+	!Detect([ENEMY.0.0.THIEF_ALL])
+	See([PC])
+THEN
+	RESPONSE #100
+		Enemy()
+		ChangeAIScript("RZSIIMGA",OVERRIDE)
+		ChangeAIScript("RZSIIMGB",CLASS)
+		ChangeAIScript("RZSIIATA",RACE)
+		StartDialogueNoSet(LastSeenBy(Myself))
+END
+
+IF
+        !Allegiance(Myself,ENEMY)
+	!Detect([NEUTRAL.0.0.THIEF_ALL])
+	!Detect([ENEMY.0.0.THIEF_ALL])
+	!See([PC])
+THEN
+	RESPONSE #100
+		Enemy()
+		ChangeAIScript("RZSIIGEN",OVERRIDE)
+		ChangeAIScript("RZSIIMGA",CLASS)
+		ChangeAIScript("RZSIIMGB",RACE)
+		ChangeAIScript("RZSIIATA",GENERAL)
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HaveSpell(WIZARD_VOCALIZE)
+	StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,20,SPELLFAILUREMAGE)
+	CheckStat(Myself,0,CLERIC_INSECT_PLAGUE)
+THEN
+	RESPONSE #100
+		EquipMostDamagingMelee()
+		SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+		Spell(Myself,WIZARD_VOCALIZE)
+END
+
+IF
+  Global("RZ_SII_Cutscene_5","MYAREA",0)
+  Detect([PC])
+THEN
+    RESPONSE #100
+             SetGlobal("RZ_SII_Cutscene_5","MYAREA",1)
+END
+
+IF
+  Global("RZ_SII_Cutscene_5","MYAREA",0)
+THEN
+    RESPONSE #100
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HaveSpell(WIZARD_STONE_SKIN)
+	Or(2)
+             !StateCheck(Myself,STATE_INVISIBLE)
+             CheckStatLT(Myself,1,STONESKINS)
+        CheckStatLT(Myself,2,STONESKINS)
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,20,SPELLFAILUREMAGE)
+	CheckStat(Myself,0,CLERIC_INSECT_PLAGUE)
+THEN
+	RESPONSE #100
+		EquipMostDamagingMelee()
+		SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+		Spell(Myself,WIZARD_STONE_SKIN)
+END
+
+IF
+
+        OR(2)
+        Global("RZ_Can_Melee","LOCALS",0)
+        Global("RZ_Ranged","LOCALS",0)
+        !GlobalTimerNotExpired("RZ_Run_Away_Timer","LOCALS")
+	RandomNumGT(20,5)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	OR(2)
+	     Range([NEUTRAL.0.0.THIEF_ALL],8)
+	     Range([ENEMY.0.0.THIEF_ALL],8)
+THEN
+	RESPONSE #100
+                 EquipMostDamagingMelee()
+	         SetGlobalTimer("RZ_Run_Away_Timer","LOCALS",12)
+	         RunAwayFrom(NearestEnemyOf(Myself),45)
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HaveSpell(WIZARD_GHOST_ARMOR)
+	Detect([PC])
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStat(Myself,0,CLERIC_INSECT_PLAGUE)
+	CheckStatLT(Myself,20,SPELLFAILUREMAGE)
+THEN
+	RESPONSE #100
+		EquipMostDamagingMelee()
+		SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+		Spell(Myself,WIZARD_GHOST_ARMOR)
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HaveSpell(WIZARD_AGANNAZAR_SCORCHER)
+	RandomNumGT(20,5)
+	OR(2)
+	     See([NEUTRAL.0.0.THIEF_ALL])
+	     See([ENEMY.0.0.THIEF_ALL])
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,20,SPELLFAILUREMAGE)
+	CheckStat(Myself,0,CLERIC_INSECT_PLAGUE)
+THEN
+	RESPONSE #100
+		EquipMostDamagingMelee()
+		SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+		Spell(LastSeenBy(Myself),WIZARD_AGANNAZAR_SCORCHER)
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HaveSpell(WIZARD_MAGIC_MISSILE)
+	RandomNumGT(20,5)
+	OR(2)
+	     See([NEUTRAL.0.0.THIEF_ALL])
+	     See([ENEMY.0.0.THIEF_ALL])
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,20,SPELLFAILUREMAGE)
+	CheckStat(Myself,0,CLERIC_INSECT_PLAGUE)
+THEN
+	RESPONSE #100
+		EquipMostDamagingMelee()
+		SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+		Spell(LastSeenBy(Myself),WIZARD_MAGIC_MISSILE)
+END
+
+IF
+        OR(2)
+	     ActionListEmpty()
+	     Global("RZ_Can_Melee","LOCALS",1)
+        !RandomNum(21,6)
+	OR(2)
+	     Global("RZ_Can_Melee","LOCALS",1)
+	     !StateCheck(Myself,STATE_INVISIBLE)
+	OR(2)
+	     See([NEUTRAL.0.0.THIEF_ALL])
+	     See([ENEMY.0.0.THIEF_ALL])
+THEN
+	RESPONSE #100
+		EquipMostDamagingMelee()
+		AttackReevaluate(LastSeenBy(Myself),30)
+END
+
+IF
+	ActionListEmpty()
+THEN
+	RESPONSE #100
+		RandomWalk()
+END

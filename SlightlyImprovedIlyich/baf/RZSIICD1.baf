@@ -1,0 +1,39 @@
+IF
+  Global("RZ_SII_Cutscene_1","MYAREA",0)
+  Detect([PC])
+THEN
+    RESPONSE #100
+             SetGlobal("RZ_SII_Cutscene_1","MYAREA",1)
+             ClearAllActions()
+             SetCutsceneLite(TRUE)
+             MultiPlayerSync()
+             DisplayStringHead(Myself,@2)
+END
+
+IF
+  Global("RZ_SII_Cutscene_1","MYAREA",0)
+THEN
+    RESPONSE #100
+END
+
+IF
+	!Detect([NEUTRAL.0.0.THIEF_ALL])
+	HPPercentLT(Myself,100)
+	HasItem("RZMINHP",Myself) // Imoen's Belt
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		Wait(1)
+		DestroyItem("RZMINHP") // Imoen's Belt
+		SetCutsceneLite(FALSE)
+		Kill(Myself)
+END
+
+IF
+	See([NEUTRAL.0.0.THIEF_ALL])
+THEN
+	RESPONSE #100
+	        EquipMostDamagingMelee()  
+		Attack(LastSeenBy(Myself))
+END
+

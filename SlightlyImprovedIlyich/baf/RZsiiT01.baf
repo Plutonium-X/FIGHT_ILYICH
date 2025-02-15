@@ -1,0 +1,29 @@
+IF
+	IsOverMe("Imoen")
+	CombatCounter(0)
+	Global("RZ_SII_Lightning","AR0602",0)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_SII_Lightning","AR0602",1)
+		ActionOverride("Imoen",StartDialogueNoSet(Player1))
+END
+
+IF
+	IsOverMe([PC])
+	InParty("Imoen")
+	!Dead("Imoen") // Imoen
+	Range("Imoen",12)
+	Global("RZ_SII_Lightning","AR0602",0)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_SII_Lightning","AR0602",1)
+		ActionOverride("Imoen",StartDialogueNoSet(Player1))
+END
+
+IF
+	IsOverMe([PC])
+	Global("RZ_SII_Lightning","AR0602",0)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_SII_Lightning","AR0602",2)
+END

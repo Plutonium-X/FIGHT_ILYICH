@@ -1,0 +1,10 @@
+IF
+  OR(2)
+       Heard([ANYONE],99)
+       AttackedBy([ANYONE],0)
+  !Allegiance(Myself,ENEMY)
+THEN
+    RESPONSE #100
+             Shout(99)
+             Enemy()
+END

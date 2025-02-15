@@ -1,0 +1,602 @@
+IF
+	Global("RZ_Can_Melee","LOCALS",0)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Can_Melee","LOCALS",1)
+		Continue()
+END
+
+IF
+  Global("RZ_Set_Trap","LOCALS",0)
+  !GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+  Difficulty(HARDEST)
+  RandomNumGT(20,4)
+  CheckStatGT(Myself,59,SETTRAPS)
+  OR(2)
+  !Detect([PC])
+  !Detect(NearestEnemyOf(Myself))
+THEN
+    RESPONSE #100
+             SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+             SetGlobal("RZ_Set_Trap","LOCALS",1)
+             SpellRES("SPCL412",Myself)
+END
+
+IF
+  Global("RZ_Set_Trap","LOCALS",0)
+  !GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+  Difficulty(HARD)
+  RandomNumGT(20,7)
+  CheckStatGT(Myself,59,SETTRAPS)
+  OR(2)
+  !Detect([PC])
+  !Detect(NearestEnemyOf(Myself))
+THEN
+    RESPONSE #100
+             SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+             SetGlobal("RZ_Set_Trap","LOCALS",1)
+             SpellRES("SPCL412",Myself)
+END
+
+IF
+  Global("RZ_Set_Trap","LOCALS",0)
+  !GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+  Difficulty(NORMAL)
+  RandomNumGT(20,10)
+  CheckStatGT(Myself,59,SETTRAPS)
+  OR(2)
+  !Detect([PC])
+  !Detect(NearestEnemyOf(Myself))
+THEN
+    RESPONSE #100
+             SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+             SetGlobal("RZ_Set_Trap","LOCALS",1)
+             SpellRES("SPCL412",Myself)
+END
+
+IF
+  Global("RZ_Set_Trap","LOCALS",0)
+  !GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+  Difficulty(EASY)
+  RandomNumGT(20,13)
+  CheckStatGT(Myself,59,SETTRAPS)
+  OR(2)
+  !Detect([PC])
+  !Detect(NearestEnemyOf(Myself))
+THEN
+    RESPONSE #100
+             SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+             SetGlobal("RZ_Set_Trap","LOCALS",1)
+             SpellRES("SPCL412",Myself)
+END
+
+IF
+  Global("RZ_Set_Trap","LOCALS",0)
+  !GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+  Difficulty(EASIEST)
+  RandomNumGT(20,16)
+  CheckStatGT(Myself,59,SETTRAPS)
+  OR(2)
+  !Detect([PC])
+  !Detect(NearestEnemyOf(Myself))
+THEN
+    RESPONSE #100
+             SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+             SetGlobal("RZ_Set_Trap","LOCALS",1)
+             SpellRES("SPCL412",Myself)
+END
+
+IF
+  Global("RZ_Set_Trap","LOCALS",0)
+  !GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+  OR(2)
+  !Detect([PC])
+  !Detect(NearestEnemyOf(Myself))
+THEN
+    RESPONSE #100
+             SetGlobal("RZ_Set_Trap","LOCALS",1)
+END
+
+IF
+	!Allegiance(Myself,ENEMY)
+	OR(19)
+		Global("RZ_Under_Attack","MYAREA",1)
+		AttackedBy([GOODCUTOFF.0.0.0.0.SUMMONED],DEFAULT)
+		AttackedBy([PC],DEFAULT)
+		AttackedBy([FAMILIAR],DEFAULT)
+		AttackedBy([ALLY],DEFAULT)
+		AttackedBy([CONTROLLED],DEFAULT)
+		AttackedBy([CHARMED],DEFAULT)
+		HitBy([GOODCUTOFF.0.0.0.0.SUMMONED],CRUSHING)
+		HitBy([PC],CRUSHING)
+		HitBy([FAMILIAR],CRUSHING)
+		HitBy([ALLY],CRUSHING)
+		HitBy([CONTROLLED],CRUSHING)
+		HitBy([CHARMED],CRUSHING)
+		SpellCastOnMe([GOODCUTOFF.0.0.0.0.SUMMONED],0)
+		SpellCastOnMe([PC],0)
+		SpellCastOnMe([FAMILIAR],0)
+		SpellCastOnMe([ALLY],0)
+		SpellCastOnMe([CONTROLLED],0)
+		SpellCastOnMe([CHARMED],0)
+THEN
+	RESPONSE #100
+		Enemy()
+		SetGlobal("RZ_See_Enemy","LOCALS",1)
+		SetGlobal("RZ_Under_Attack","MYAREA",1)
+		Continue()
+END
+
+IF
+        Global("RZ_Rest","LOCALS",0)
+        OR(7)
+             Detect([GOODCUTOFF.0.0.0.0.SUMMONED])
+	     Detect([PC])
+	     Detect([ALLY])
+	     Detect([CONTROLLED])
+             Detect([CHARMED])
+             Detect([FAMILIAR])
+             Detect(NearestEnemyOf(Myself))
+ THEN
+	RESPONSE #100
+	         SetGlobal("RZ_Rest","LOCALS",1)
+	         SetGlobalTimer("RZ_Rest_Timer","LOCALS",2400)
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Rest_Timer","LOCALS")
+	!Detect([GOODCUTOFF.0.0.0.0.SUMMONED])
+	!Detect([PC])
+	!Detect([ALLY])
+	!Detect([CONTROLLED])
+        !Detect([CHARMED])
+        !Detect([FAMILIAR])
+        !Detect(NearestEnemyOf(Myself))
+        CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("RZ_Rest_Timer","LOCALS",3600)
+		SetGlobal("RZ_Rest","LOCALS",0)
+		ApplySpell(Myself,RESTORE_FULL_HEALTH)
+		Rest()
+END
+
+IF
+	Global("RZ_See_Enemy","LOCALS",0)
+	Allegiance(Myself,ENEMY)
+	OR(20)
+		Heard([ENEMY],100)
+		See(NearestEnemyOf(Myself))
+		AttackedBy([GOODCUTOFF.0.0.0.0.SUMMONED],DEFAULT)
+		AttackedBy([PC],DEFAULT)
+		AttackedBy([FAMILIAR],DEFAULT)
+		AttackedBy([ALLY],DEFAULT)
+		AttackedBy([CONTROLLED],DEFAULT)
+		AttackedBy([CHARMED],DEFAULT)
+		HitBy([GOODCUTOFF.0.0.0.0.SUMMONED],CRUSHING)
+		HitBy([PC],CRUSHING)
+		HitBy([FAMILIAR],CRUSHING)
+		HitBy([ALLY],CRUSHING)
+		HitBy([CONTROLLED],CRUSHING)
+		HitBy([CHARMED],CRUSHING)
+		SpellCastOnMe([GOODCUTOFF.0.0.0.0.SUMMONED],0)
+		SpellCastOnMe([PC],0)
+		SpellCastOnMe([FAMILIAR],0)
+		SpellCastOnMe([ALLY],0)
+		SpellCastOnMe([CONTROLLED],0)
+		SpellCastOnMe([CHARMED],0)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_See_Enemy","LOCALS",1)
+		Shout(100)
+		Continue()
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	Global("RZ_Thief_Healing","LOCALS",0)
+	HasItem("POTN10",Myself) // Potion of Invisibility
+	!StateCheck(Myself,STATE_INVISIBLE)
+	HPPercentLT(Myself,35)
+	CheckStat([PC],0,TRUE_SIGHT)
+	CheckStat(SecondNearest([PC]),0,TRUE_SIGHT)
+	CheckStat(ThirdNearest([PC]),0,TRUE_SIGHT)
+	CheckStat(FourthNearest([PC]),0,TRUE_SIGHT)
+	CheckStat(FifthNearest([PC]),0,TRUE_SIGHT)
+	CheckStat(SixthNearest([PC]),0,TRUE_SIGHT)
+	See(NearestEnemyOf(Myself))
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Thief_Healing","LOCALS",1)
+		UseItem("POTN10",Myself) // Potion of Invisibility
+END
+
+IF
+        Global("RZ_Thief_Healing","LOCALS",0)
+        OR(9)
+             !HasItem("POTN10",Myself) // Potion of Invisibility
+	     StateCheck(Myself,STATE_INVISIBLE)
+	     !See(NearestEnemyOf(Myself))
+	     !CheckStat([PC],0,TRUE_SIGHT)
+	     !CheckStat(SecondNearest([PC]),0,TRUE_SIGHT)
+	     !CheckStat(ThirdNearest([PC]),0,TRUE_SIGHT)
+	     !CheckStat(FourthNearest([PC]),0,TRUE_SIGHT)
+	     !CheckStat(FifthNearest([PC]),0,TRUE_SIGHT)
+	     !CheckStat(SixthNearest([PC]),0,TRUE_SIGHT)
+	OR(8)
+             !HasItem("POTN10",Myself) // Potion of Invisibility
+	     HPPercentLT(Myself,35)
+	     !CheckStat([PC],0,TRUE_SIGHT)
+	     !CheckStat(SecondNearest([PC]),0,TRUE_SIGHT)
+	     !CheckStat(ThirdNearest([PC]),0,TRUE_SIGHT)
+	     !CheckStat(FourthNearest([PC]),0,TRUE_SIGHT)
+	     !CheckStat(FifthNearest([PC]),0,TRUE_SIGHT)
+	     !CheckStat(SixthNearest([PC]),0,TRUE_SIGHT)
+	HPPercentLT(Myself,100)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Thief_Healing","LOCALS",1)
+END
+
+IF
+	Global("RZ_Thief_Healing","LOCALS",1)
+	HasItem("POTN52",Myself) // Potion of Extra Healing
+	HPPercentLT(Myself,100)
+	StateCheck(Myself,STATE_INVISIBLE)
+THEN
+	RESPONSE #100
+		UseItem("POTN52",Myself) // Potion of Extra Healing
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HasItem("POTN52",Myself) // Potion of Extra Healing
+	Global("RZ_Thief_Healing","LOCALS",1)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	HPPercentLT(Myself,65)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+		UseItem("POTN52",Myself) // Potion of Extra Healing
+END
+
+IF
+	Global("RZ_Thief_Healing","LOCALS",1)
+	HasItem("POTN08",Myself) // Potion of Healing
+	HPPercentLT(Myself,100)
+	StateCheck(Myself,STATE_INVISIBLE)
+THEN
+	RESPONSE #100
+		UseItem("POTN08",Myself) // Potion of Healing
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HasItem("POTN08",Myself) // Potion of Healing
+	Global("RZ_Thief_Healing","LOCALS",1)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	HPPercentLT(Myself,80)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+		UseItem("POTN08",Myself) // Potion of Healing
+END
+
+IF
+       Allegiance(Myself,ENEMY)
+       !Detect(NearestEnemyOf(Myself))
+	!StateCheck(Myself,STATE_INVISIBLE)
+THEN
+	RESPONSE #100
+		Hide()
+		Continue()
+END
+
+IF
+       !Allegiance(Myself,ENEMY)
+       !Detect([PC])
+       !StateCheck(Myself,STATE_INVISIBLE)
+THEN
+	RESPONSE #100
+		Hide()
+		Continue()
+END
+
+IF
+	!Allegiance(Myself,ENEMY)
+THEN
+	RESPONSE #100
+	         NoAction()
+END
+
+IF
+	!See(NearestEnemyOf(Myself))
+	Range(NearestDoor,8)
+	OpenState(NearestDoor,FALSE)
+THEN
+	RESPONSE #100
+		OpenDoor(NearestDoor)
+		Continue()
+END
+
+IF
+	Global("RZ_See_Enemy","LOCALS",0)
+THEN
+	RESPONSE #100
+	         RandomWalk()
+        RESPONSE #100
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HasItem("POTN11",Myself) // Potion of Invulnerability
+	OR(2)
+		See(NearestEnemyOf(Myself))
+		Global("RZ_Move_To_PC","LOCALS",1)
+	Allegiance(Myself,ENEMY)
+	OR(2)
+		RandomNumGT(20,10)
+		DifficultyGT(EASY)
+	OR(2)
+		RandomNumGT(20,15)
+		DifficultyGT(EASIEST)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+		UseItem("POTN11",Myself) // Potion of Invulnerability
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HasItem("POTN14",Myself) // Oil of Speed
+	OR(2)
+		See(NearestEnemyOf(Myself))
+		Global("RZ_Move_To_PC","LOCALS",1)
+	Allegiance(Myself,ENEMY)
+	OR(2)
+		RandomNumGT(20,10)
+		DifficultyGT(EASY)
+	OR(2)
+		RandomNumGT(20,15)
+		DifficultyGT(EASIEST)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+		UseItem("POTN14",Myself) // Oil of Speed
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HasItem("POTN41",Myself) // Oil of Speed
+	OR(2)
+		See(NearestEnemyOf(Myself))
+		Global("RZ_Move_To_PC","LOCALS",1)
+	Allegiance(Myself,ENEMY)
+	OR(2)
+		RandomNumGT(20,10)
+		DifficultyGT(EASY)
+	OR(2)
+		RandomNumGT(20,15)
+		DifficultyGT(EASIEST)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+		UseItem("POTN41",Myself) // Oil of Speed
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HasItem("POTN14",Myself) // Oil of Speed
+	OR(2)
+		See(NearestEnemyOf(Myself))
+		Global("RZ_Move_To_PC","LOCALS",1)
+	Allegiance(Myself,ENEMY)
+THEN
+	RESPONSE #100
+		DestroyItem("POTN14") // Oil of Speed
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HasItem("POTN41",Myself) // Oil of Speed
+	OR(2)
+		See(NearestEnemyOf(Myself))
+		Global("RZ_Move_To_PC","LOCALS",1)
+	Allegiance(Myself,ENEMY)
+THEN
+	RESPONSE #100
+		DestroyItem("POTN41") // Oil of Speed
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HasItem("POTN11",Myself) // Potion of Invulnerability
+	OR(2)
+		See(NearestEnemyOf(Myself))
+		Global("RZ_Move_To_PC","LOCALS",1)
+	Allegiance(Myself,ENEMY)
+THEN
+	RESPONSE #100
+		DestroyItem("POTN11") // Potion of Invulnerability
+END
+
+IF
+	Global("RZ_Move_To_PC","LOCALS",1)
+	OR(2)
+		ActionListEmpty()
+		See(NearestEnemyOf(Myself))
+	Allegiance(Myself,ENEMY)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Move_To_PC","LOCALS",0)
+		ClearActions(Myself)
+END
+
+IF
+	Global("RZ_Move_To_PC","LOCALS",1)
+	Or(2)
+             !CheckStat(Player1,0,SANCTUARY)
+	     StateCheck(Player1,STATE_INVISIBLE)
+        Or(3)
+             !CheckStat(Player2,0,SANCTUARY)
+	     StateCheck(Player2,STATE_INVISIBLE)
+	     HPLT(Player2,1)
+        Or(3)
+             !CheckStat(Player3,0,SANCTUARY)
+	     StateCheck(Player3,STATE_INVISIBLE)
+	     HPLT(Player3,1)
+        Or(3)
+             !CheckStat(Player4,0,SANCTUARY)
+	     StateCheck(Player4,STATE_INVISIBLE)
+	     HPLT(Player4,1)
+        Or(3)
+             !CheckStat(Player5,0,SANCTUARY)
+	     StateCheck(Player5,STATE_INVISIBLE)
+	     HPLT(Player5,1)
+        Or(3)
+             !CheckStat(Player6,0,SANCTUARY)
+	     StateCheck(Player6,STATE_INVISIBLE)
+	     HPLT(Player6,1)
+      Allegiance(Myself,ENEMY)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Move_To_PC","LOCALS",0)
+		ClearActions(Myself)
+END
+
+IF
+	Global("RZ_Move_To_PC","LOCALS",1)
+	Range(NearestDoor,30)
+	!See(NearestEnemyOf(Myself))
+THEN
+	RESPONSE #100
+		MoveToObject(NearestDoor)
+END
+
+IF
+	Global("RZ_Move_To_PC","LOCALS",1)
+THEN
+	RESPONSE #100
+END
+
+IF
+	Global("RZ_Move_To_PC","LOCALS",0)
+	Global("RZ_See_Enemy","LOCALS",1)
+	NumInPartyGT(0)
+	!See(NearestEnemyOf(Myself))
+	!HPLT(Player1,1)
+	CheckStat(Player1,0,SANCTUARY)
+	!StateCheck(Player1,STATE_INVISIBLE)
+	Allegiance(Myself,ENEMY)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Move_To_PC","LOCALS",1)
+		MoveToObject(Player1)
+END
+
+IF
+	Global("RZ_Move_To_PC","LOCALS",0)
+	Global("RZ_See_Enemy","LOCALS",1)
+	NumInPartyGT(1)
+	!See(NearestEnemyOf(Myself))
+	!HPLT(Player2,1)
+	CheckStat(Player2,0,SANCTUARY)
+	!StateCheck(Player2,STATE_INVISIBLE)
+	Allegiance(Myself,ENEMY)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Move_To_PC","LOCALS",1)
+		MoveToObject(Player2)
+END
+
+IF
+	Global("RZ_Move_To_PC","LOCALS",0)
+	Global("RZ_See_Enemy","LOCALS",1)
+	NumInPartyGT(2)
+	!See(NearestEnemyOf(Myself))
+	!HPLT(Player3,1)
+	CheckStat(Player3,0,SANCTUARY)
+	!StateCheck(Player3,STATE_INVISIBLE)
+	Allegiance(Myself,ENEMY)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Move_To_PC","LOCALS",1)
+		MoveToObject(Player3)
+END
+
+IF
+	Global("RZ_Move_To_PC","LOCALS",0)
+	Global("RZ_See_Enemy","LOCALS",1)
+	NumInPartyGT(3)
+	!See(NearestEnemyOf(Myself))
+	!HPLT(Player4,1)
+	CheckStat(Player4,0,SANCTUARY)
+	!StateCheck(Player4,STATE_INVISIBLE)
+	Allegiance(Myself,ENEMY)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Move_To_PC","LOCALS",1)
+		MoveToObject(Player4)
+END
+
+IF
+	Global("RZ_Move_To_PC","LOCALS",0)
+	Global("RZ_See_Enemy","LOCALS",1)
+	NumInPartyGT(4)
+	!See(NearestEnemyOf(Myself))
+	!HPLT(Player5,1)
+	CheckStat(Player5,0,SANCTUARY)
+	!StateCheck(Player5,STATE_INVISIBLE)
+	Allegiance(Myself,ENEMY)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Move_To_PC","LOCALS",1)
+		MoveToObject(Player5)
+END
+
+IF
+	Global("RZ_Move_To_PC","LOCALS",0)
+	Global("RZ_See_Enemy","LOCALS",1)
+	NumInPartyGT(5)
+	!See(NearestEnemyOf(Myself))
+	!HPLT(Player6,1)
+	CheckStat(Player6,0,SANCTUARY)
+	!StateCheck(Player6,STATE_INVISIBLE)
+	Allegiance(Myself,ENEMY)
+THEN
+	RESPONSE #100
+		SetGlobal("RZ_Move_To_PC","LOCALS",1)
+		MoveToObject(Player6)
+END
+
+IF
+	Global("RZ_Move_To_PC","LOCALS",0)
+        !Global("RZ_See_Enemy","LOCALS",0)
+	!See(NearestEnemyOf(Myself))
+THEN
+	RESPONSE #100
+	         RandomWalk()
+END
+
+IF
+	Global("RZ_Ranged","LOCALS",0)
+	!StateCheck(Myself,STATE_INVISIBLE)
+        !GlobalTimerNotExpired("RZ_Run_Away_Timer","LOCALS")
+	RandomNumGT(20,5)
+	Range(NearestEnemyOf(Myself),8)
+THEN
+	RESPONSE #100
+                 EquipMostDamagingMelee()
+	         SetGlobalTimer("RZ_Run_Away_Timer","LOCALS",12)
+	         RunAwayFrom(NearestEnemyOf(Myself),60)
+END
+
+IF
+        Global("RZ_Ranged","LOCALS",0)
+	!HasItem("AROW01",Myself)
+	!HasItem("AROW02",Myself)
+	!HasItem("AROW05",Myself)
+THEN
+	RESPONSE #100
+              SetGlobal("RZ_Ranged","LOCALS",1)
+END

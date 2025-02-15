@@ -1,0 +1,14 @@
+IF
+  Global("RZ_SII_Create_Items","AR0602",0)
+THEN
+    RESPONSE #100
+             SetGlobal("RZ_SII_Create_Items","AR0602",1)
+             ActionOverride("Chest 5",CreateItem("POTN20",1,0,0))
+             ActionOverride("Shelf 3",CreateItem("SCRL6T",1,0,0))
+             ActionOverride("Shelf 6",CreateItem("POTN20",1,0,0))
+             ActionOverride("Chest 8",CreateItem("POTN52",2,0,0))
+             ActionOverride("Chest 2",CreateItem("POTN52",1,0,0))
+             ActionOverride("Chest 4",CreateItem("POTN46",1,0,0))
+             ActionOverride("shelf 17",CreateItem("POTN24",1,0,0))
+             ActionOverride("Jailkeep Table",CreateItem("BLUN01",1,0,0))
+END

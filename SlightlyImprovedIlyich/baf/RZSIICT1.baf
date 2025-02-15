@@ -1,0 +1,31 @@
+IF
+  Global("RZ_SII_Cutscene_1","MYAREA",0)
+  !StateCheck(Myself,STATE_INVISIBLE)
+  !Detect([PC])
+THEN
+    RESPONSE #100
+             ApplySpell(Myself,WIZARD_INVISIBILITY)
+END
+
+IF
+  Global("RZ_SII_Cutscene_1","MYAREA",0)
+THEN
+    RESPONSE #100
+END
+
+IF
+  Global("RZ_SII_Poison_Weapon","LOCALS",0)
+THEN
+    RESPONSE #100
+             SetGlobal("RZ_SII_Poison_Weapon","LOCALS",1)
+             SpellRES("SPCL423",Myself)
+             Continue()
+END
+
+IF
+	See([NEUTRAL.0.DWARF.MAGE_ALL])
+THEN
+	RESPONSE #100
+	        EquipMostDamagingMelee() 
+		Attack(LastSeenBy(Myself))
+END

@@ -1,0 +1,294 @@
+IF
+	OR(2)
+	     Global("RZ_SII_Cutscene_3","MYAREA",2)
+        !Detect([NEUTRAL.0.DWARF.FIGHTER_ALL])
+	Gender(Myself,FEMALE)
+	!See([PC])
+THEN
+	RESPONSE #100
+	        Enemy()
+                ChangeAIScript("RZSIITHA",OVERRIDE)
+		ChangeAIScript("RZSIIATA",CLASS)
+END
+
+IF
+	OR(2)
+	     Global("RZ_SII_Cutscene_3","MYAREA",2)
+             !Detect([NEUTRAL.0.DWARF.FIGHTER_ALL])
+	Gender(Myself,MALE)
+	!See([PC])
+THEN
+	RESPONSE #100
+	        Enemy() 
+                ChangeAIScript("RZSIITHA",OVERRIDE)
+		ChangeAIScript("RZSIIATT",CLASS)
+END
+
+IF
+        Global("RZ_Ranged","LOCALS",0)
+        !HasItem("AROW01",Myself)
+THEN
+	RESPONSE #100
+              SetGlobal("RZ_Ranged","LOCALS",1)
+END
+
+IF
+        Global("RZ_Rest","LOCALS",0)
+        OR(7)
+             Detect([GOODCUTOFF.0.0.0.0.SUMMONED])
+	     Detect([PC])
+	     Detect([ALLY])
+	     Detect([CONTROLLED])
+             Detect([CHARMED])
+             Detect([FAMILIAR])
+             Detect(NearestEnemyOf(Myself))
+ THEN
+	RESPONSE #100
+	         SetGlobal("RZ_Rest","LOCALS",1)
+	         SetGlobalTimer("RZ_Rest_Timer","LOCALS",2400)
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Rest_Timer","LOCALS")
+	!Detect([GOODCUTOFF.0.0.0.0.SUMMONED])
+	!Detect([PC])
+	!Detect([ALLY])
+	!Detect([CONTROLLED])
+        !Detect([CHARMED])
+        !Detect([FAMILIAR])
+        !Detect(NearestEnemyOf(Myself))
+        CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("RZ_Rest_Timer","LOCALS",3600)
+		SetGlobal("RZ_Rest","LOCALS",0)
+		ApplySpell(Myself,RESTORE_FULL_HEALTH)
+		Rest()
+END
+
+IF
+        !Allegiance(Myself,ENEMY)
+        Gender(Myself,FEMALE)
+	OR(19)
+                Global("RZ_SII_Cutscene_3","MYAREA",2)
+                AttackedBy([GOODCUTOFF.0.0.0.0.SUMMONED],DEFAULT)
+		AttackedBy([PC],DEFAULT)
+		AttackedBy([FAMILIAR],DEFAULT)
+		AttackedBy([ALLY],DEFAULT)
+		AttackedBy([CONTROLLED],DEFAULT)
+		AttackedBy([CHARMED],DEFAULT)
+		HitBy([GOODCUTOFF.0.0.0.0.SUMMONED],CRUSHING)
+		HitBy([PC],CRUSHING)
+		HitBy([FAMILIAR],CRUSHING)
+		HitBy([ALLY],CRUSHING)
+		HitBy([CONTROLLED],CRUSHING)
+		HitBy([CHARMED],CRUSHING)
+		SpellCastOnMe([GOODCUTOFF.0.0.0.0.SUMMONED],0)
+		SpellCastOnMe([PC],0)
+		SpellCastOnMe([FAMILIAR],0)
+		SpellCastOnMe([ALLY],0)
+		SpellCastOnMe([CONTROLLED],0)
+		SpellCastOnMe([CHARMED],0)
+THEN
+	RESPONSE #100
+		Enemy()
+		SetGlobal("RZ_SII_Cutscene_3","MYAREA",2)
+		DisplayStringHead(Myself,61896)
+		ChangeAIScript("RZSIITHA",OVERRIDE)
+		ChangeAIScript("RZSIIATA",CLASS)
+	RESPONSE #100
+		Enemy()
+		SetGlobal("RZ_SII_Cutscene_3","MYAREA",2)
+		DisplayStringHead(Myself,61896)
+		ChangeAIScript("RZSIITHA",OVERRIDE)
+		ChangeAIScript("RZSIIATA",CLASS)
+END
+
+IF
+        !Allegiance(Myself,ENEMY)
+        Gender(Myself,MALE)
+	OR(19)
+                Global("RZ_SII_Cutscene_3","MYAREA",2)
+                AttackedBy([GOODCUTOFF.0.0.0.0.SUMMONED],DEFAULT)
+		AttackedBy([PC],DEFAULT)
+		AttackedBy([FAMILIAR],DEFAULT)
+		AttackedBy([ALLY],DEFAULT)
+		AttackedBy([CONTROLLED],DEFAULT)
+		AttackedBy([CHARMED],DEFAULT)
+		HitBy([GOODCUTOFF.0.0.0.0.SUMMONED],CRUSHING)
+		HitBy([PC],CRUSHING)
+		HitBy([FAMILIAR],CRUSHING)
+		HitBy([ALLY],CRUSHING)
+		HitBy([CONTROLLED],CRUSHING)
+		HitBy([CHARMED],CRUSHING)
+		SpellCastOnMe([GOODCUTOFF.0.0.0.0.SUMMONED],0)
+		SpellCastOnMe([PC],0)
+		SpellCastOnMe([FAMILIAR],0)
+		SpellCastOnMe([ALLY],0)
+		SpellCastOnMe([CONTROLLED],0)
+		SpellCastOnMe([CHARMED],0)
+THEN
+	RESPONSE #100
+		Enemy()
+		SetGlobal("RZ_SII_Cutscene_3","MYAREA",2)
+		DisplayStringHead(Myself,61886)
+		ChangeAIScript("RZSIITHA",OVERRIDE)
+		ChangeAIScript("RZSIIATT",CLASS)
+	RESPONSE #100
+		Enemy()
+		SetGlobal("RZ_SII_Cutscene_3","MYAREA",2)
+		DisplayStringHead(Myself,61887)
+		ChangeAIScript("RZSIITHA",OVERRIDE)
+		ChangeAIScript("RZSIIATT",CLASS)
+END
+
+IF
+        !Allegiance(Myself,ENEMY)
+	!Detect([NEUTRAL.0.DWARF.FIGHTER_ALL])
+	!Detect([ENEMY.0.DWARF.FIGHTER_ALL])
+THEN
+	RESPONSE #100
+                 SetGlobal("RZ_SII_Cutscene_3","MYAREA",2)
+END
+
+IF
+  Global("RZ_SII_Cutscene_3","MYAREA",0)
+  Detect([PC])
+THEN
+    RESPONSE #100
+             SetGlobal("RZ_SII_Cutscene_3","MYAREA",1)
+END
+
+IF
+  Global("RZ_SII_Cutscene_3","MYAREA",0)
+THEN
+    RESPONSE #100
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HasItem("POTN08",Myself) // Potion of Healing
+	HPPercentLT(Myself,80)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+		UseItem("POTN08",Myself) // Potion of Healing
+END
+
+IF
+
+        OR(2)
+        Global("RZ_Can_Melee","LOCALS",0)
+        Global("RZ_Ranged","LOCALS",0)
+        !GlobalTimerNotExpired("RZ_Run_Away_Timer","LOCALS")
+	RandomNumGT(20,5)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	OR(2)
+	     Range([NEUTRAL.0.DWARF.FIGHTER_ALL],8)
+	     Range([ENEMY.0.DWARF.FIGHTER_ALL],8)
+THEN
+	RESPONSE #100
+                 EquipMostDamagingMelee()
+	         SetGlobalTimer("RZ_Run_Away_Timer","LOCALS",12)
+	         RunAwayFrom(NearestEnemyOf(Myself),45)
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	!GlobalTimerNotExpired("RZ_Invisibility_Potion_Timer","LOCALS")
+	HasItem("POTN10",Myself) // Potion of Invisibility
+	!StateCheck(Myself,STATE_INVISIBLE)
+	OR(2)
+	     See([NEUTRAL.0.DWARF.FIGHTER_ALL])
+	     See([ENEMY.0.DWARF.FIGHTER_ALL])
+	Range(LastSeenBy(Myself),12)
+	CheckStat([PC],0,TRUE_SIGHT)
+	CheckStat(SecondNearest([PC]),0,TRUE_SIGHT)
+	CheckStat(ThirdNearest([PC]),0,TRUE_SIGHT)
+	CheckStat(FourthNearest([PC]),0,TRUE_SIGHT)
+	CheckStat(FifthNearest([PC]),0,TRUE_SIGHT)
+	CheckStat(SixthNearest([PC]),0,TRUE_SIGHT)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+		SetGlobalTimer("RZ_Invisibility_Potion_Timer","LOCALS",12)
+		UseItem("POTN10",Myself) // Potion of Invisibility
+END
+
+IF
+	ActionListEmpty()
+	Global("RZ_Backstab","LOCALS",0)
+	StateCheck(Myself,STATE_INVISIBLE)
+	OR(2)
+	     See([NEUTRAL.0.DWARF.FIGHTER_ALL])
+	     See([ENEMY.0.DWARF.FIGHTER_ALL])
+THEN
+	RESPONSE #100
+		EquipMostDamagingMelee()
+		SetGlobal("RZ_Backstab","LOCALS",1)
+		FollowObjectFormation(LastSeenBy(Myself),11,1)
+END
+
+IF
+        Delay(1)
+        Global("RZ_Backstab","LOCALS",1)
+        HaveSpellRES("SPCL423")
+        RandomNumGT(20,10)
+        !CheckStat(Myself,4,SCRIPTINGSTATE4)
+	OR(2)
+	     See([NEUTRAL.0.DWARF.FIGHTER_ALL])
+	     See([ENEMY.0.DWARF.FIGHTER_ALL])
+	Range(LastSeenBy(Myself),6)
+THEN
+	RESPONSE #100
+		EquipMostDamagingMelee()
+		SpellRES("SPCL423",Myself)
+		SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+		SetGlobal("RZ_Backstab","LOCALS",0)
+		AttackOneRound(LastSeenBy(Myself))
+END
+
+IF
+        Delay(1)
+        Global("RZ_Backstab","LOCALS",1)
+	OR(2)
+	     See([NEUTRAL.0.DWARF.FIGHTER_ALL])
+	     See([ENEMY.0.DWARF.FIGHTER_ALL])
+	Range(LastSeenBy(Myself),6)
+THEN
+	RESPONSE #100
+		EquipMostDamagingMelee()
+		SetGlobal("RZ_Backstab","LOCALS",0)
+		AttackOneRound(LastSeenBy(Myself))
+END
+
+IF
+        Global("RZ_Ranged","LOCALS",0)
+        !RandomNum(21,6)
+	OR(2)
+	     See([NEUTRAL.0.DWARF.FIGHTER_ALL])
+	     See([ENEMY.0.DWARF.FIGHTER_ALL])
+	!Range(LastSeenBy(Myself),6)
+THEN
+	RESPONSE #100
+		EquipRanged()
+		AttackReevaluate(LastSeenBy(Myself),30)
+END
+
+IF
+        !RandomNum(21,6)
+	OR(2)
+	     See([NEUTRAL.0.DWARF.FIGHTER_ALL])
+	     See([ENEMY.0.DWARF.FIGHTER_ALL])
+THEN
+	RESPONSE #100
+		EquipMostDamagingMelee()
+		AttackReevaluate(LastSeenBy(Myself),30)
+END
+
+IF
+	ActionListEmpty()
+THEN
+	RESPONSE #100
+		RandomWalk()
+END

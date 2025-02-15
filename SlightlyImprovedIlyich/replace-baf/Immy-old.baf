@@ -1,0 +1,17 @@
+IF
+	Global("SawKhalid","AR0603",1)
+	Global("ImoenKhalid","LOCALS",0)
+	See("Jaheira")
+THEN
+	RESPONSE #100
+		StartDialogueNoSet("Jaheira")
+END
+
+IF
+	Global("SawKhalid","AR0603",1)
+	Global("ImoenKhalid","LOCALS",0)
+	!See("Jaheira")
+THEN
+	RESPONSE #100
+		SetGlobal("ImoenKhalid","LOCALS",1)
+END

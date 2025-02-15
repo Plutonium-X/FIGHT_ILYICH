@@ -1,0 +1,142 @@
+IF
+  AreaCheck("AR0602")
+THEN
+    RESPONSE #100
+            Enemy()
+            ChangeAIScript("RZSIIGEN",OVERRIDE)
+            ChangeAIScript("RZSIIWAA",CLASS)
+            ChangeAIScript("RZSIIATA",RACE)
+END
+
+IF
+        Global("RZ_Rest","LOCALS",0)
+        OR(7)
+             Detect([GOODCUTOFF.0.0.0.0.SUMMONED])
+	     Detect([PC])
+	     Detect([ALLY])
+	     Detect([CONTROLLED])
+             Detect([CHARMED])
+             Detect([FAMILIAR])
+             Detect(NearestEnemyOf(Myself))
+ THEN
+	RESPONSE #100
+	         SetGlobal("RZ_Rest","LOCALS",1)
+	         SetGlobalTimer("RZ_Rest_Timer","LOCALS",2400)
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Rest_Timer","LOCALS")
+	!Detect([GOODCUTOFF.0.0.0.0.SUMMONED])
+	!Detect([PC])
+	!Detect([ALLY])
+	!Detect([CONTROLLED])
+        !Detect([CHARMED])
+        !Detect([FAMILIAR])
+        !Detect(NearestEnemyOf(Myself))
+        CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("RZ_Rest_Timer","LOCALS",3600)
+		SetGlobal("RZ_Rest","LOCALS",0)
+		ApplySpell(Myself,RESTORE_FULL_HEALTH)
+		Rest()
+END
+
+IF
+        !Allegiance(Myself,ENEMY)
+	OR(18)
+                AttackedBy([GOODCUTOFF.0.0.0.0.SUMMONED],DEFAULT)
+		AttackedBy([PC],DEFAULT)
+		AttackedBy([FAMILIAR],DEFAULT)
+		AttackedBy([ALLY],DEFAULT)
+		AttackedBy([CONTROLLED],DEFAULT)
+		AttackedBy([CHARMED],DEFAULT)
+		HitBy([GOODCUTOFF.0.0.0.0.SUMMONED],CRUSHING)
+		HitBy([PC],CRUSHING)
+		HitBy([FAMILIAR],CRUSHING)
+		HitBy([ALLY],CRUSHING)
+		HitBy([CONTROLLED],CRUSHING)
+		HitBy([CHARMED],CRUSHING)
+		SpellCastOnMe([GOODCUTOFF.0.0.0.0.SUMMONED],0)
+		SpellCastOnMe([PC],0)
+		SpellCastOnMe([FAMILIAR],0)
+		SpellCastOnMe([ALLY],0)
+		SpellCastOnMe([CONTROLLED],0)
+		SpellCastOnMe([CHARMED],0)
+THEN
+	RESPONSE #100
+		Enemy()
+		DisplayStringHead(Myself,4939)
+		ChangeAIScript("RZSIIWAA",OVERRIDE)
+		ChangeAIScript("RZSIIATA",CLASS)
+END
+
+IF
+        !Allegiance(Myself,ENEMY)
+	!Detect([NEUTRAL.0.0.THIEF_ALL])
+	!Detect([ENEMY.0.0.THIEF_ALL])
+	See([PC])
+THEN
+	RESPONSE #100
+		Enemy()
+		DisplayStringHead(Myself,4939)
+		ChangeAIScript("RZSIIWAA",OVERRIDE)
+		ChangeAIScript("RZSIIATA",CLASS)
+END
+
+IF
+        !Allegiance(Myself,ENEMY)
+	!Detect([NEUTRAL.0.0.THIEF_ALL])
+	!Detect([ENEMY.0.0.THIEF_ALL])
+	!See([PC])
+THEN
+	RESPONSE #100
+		Enemy()
+		ChangeAIScript("RZSIIWAA",OVERRIDE)
+		ChangeAIScript("RZSIIATA",CLASS)
+END
+
+IF
+  Global("RZ_SII_Cutscene_3","MYAREA",0)
+  Detect([PC])
+THEN
+    RESPONSE #100
+             SetGlobal("RZ_SII_Cutscene_3","MYAREA",1)
+END
+
+IF
+  Global("RZ_SII_Cutscene_3","MYAREA",0)
+THEN
+    RESPONSE #100
+END
+
+IF
+	!GlobalTimerNotExpired("RZ_Action_Timer","LOCALS")
+	HasItem("POTN08",Myself) // Potion of Healing
+	HPPercentLT(Myself,80)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("RZ_Action_Timer","LOCALS",6)
+		UseItem("POTN08",Myself) // Potion of Healing
+END
+
+IF
+        !RandomNum(21,6)
+        OR(2)
+	     See([NEUTRAL.0.0.THIEF_ALL])
+	     See([ENEMY.0.0.THIEF_ALL])
+THEN
+	RESPONSE #100
+		EquipMostDamagingMelee()
+		AttackReevaluate(LastSeenBy(Myself),30)
+END
+
+IF
+	ActionListEmpty()
+THEN
+	RESPONSE #100
+		RandomWalk()
+END
+
+
+
